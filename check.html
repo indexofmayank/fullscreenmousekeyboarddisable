@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full Screen with keyboard and mouse Disable</title>
+
+    <style>
+        body,
+        html {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            position: relative; /* Ensure positioning context for overlay */
+        }
+
+        #fullscreen-content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent; /* Make overlay invisible */
+            pointer-events: none; /* Allow events to pass through the overlay */
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div id="fullscreen-content">
+        <!--first content-->
+        <h1>Welcome to full screen mode!</h1>
+        <p>Press any key to enter full screen.</p>
+        <input placeholder="test keyboard events"/>
+    </div>
+    <div id="overlay"></div>
+    <p>mayank</p>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Store reference to the document element
+            var body = document.documentElement;
+
+            // Function to enter fullscreen mode
+            function enterFullscreen() {
+                if (body.webkitRequestFullscreen) {
+                    body.webkitRequestFullscreen();
+                }
+            }
+
+            // Function to prevent exiting fullscreen mode on Escape key
+            function preventExitFullscreen(event) {
+                if (event.key === 'Escape' || event.keyCode === 27) {
+                    event.preventDefault();
+                }
+            }
+
+            document.addEventListener('keydown', enterFullscreen)
+
+            // Event listener to enter fullscreen mode on click
+            document.addEventListener('click', enterFullscreen);
+
+            // Event listener to disable keyboard events
+            document.addEventListener('keydown', function (event) {
+                event.preventDefault();
+            });
+
+            // Event listener to prevent exiting fullscreen mode on Escape key
+            document.addEventListener('fullscreenchange', function (event) {
+                if (document.fullscreenElement === null) {
+                    enterFullscreen(); // Re-enter fullscreen if exited
+                }
+            });
+        })
+    </script>
+</body>
+
+</html>
